@@ -80,7 +80,7 @@ COPY . .
 # @param {string} -DskipTests - Omite la ejecucion de tests unitarios para acelerar el build.
 # @param {string} clean - Fase de Maven que elimina artefactos de builds anteriores (directorio 'target').
 # @param {string} package - Fase de Maven que compila y empaqueta el proyecto (genera el .war en PadronWS/target/).
-# @notes Gracias al POM padre, Maven construye los modulos en el orden correcto. Las dependencias ya
+# @notes El POM padre, Maven construye los modulos en el orden correcto. Las dependencias ya
 #        fueron descargadas en el paso anterior, haciendo esta compilacion mas rapida.
 # --- 4. Construye el proyecto ---
 RUN mvn -B -DskipTests clean package
@@ -125,10 +125,10 @@ COPY docker/tomcat/conf/context.xml /usr/local/tomcat/conf/context.xml
 # @description Copia el archivo .war generado en la etapa 'build' al directorio de despliegue de Tomcat.
 # @param {string} --from=build - Especifica que el origen esta en la etapa con alias 'build'.
 # @param {string} /workspace/PadronWS/target/PadronWS-*.war - Ruta del archivo .war en la etapa 'build'. El `*` maneja nombres variables (e.g., version).
-# @param {string} /usr/local/tomcat/webapps/app.war - Ruta de destino en la imagen final. Renombrar a `app.war`
+# @param {string} /usr/local/tomcat/webapps/PadronWS.war - Ruta de destino en la imagen final. Renombrar a `app.war`
 #              hace que Tomcat despliegue la aplicacion en el context path `/app`.
 # 3. Copia el .war construido del STAGE 1
-COPY --from=build /workspace/PadronWS/target/PadronWS-*.war /usr/local/tomcat/webapps/app.war
+COPY --from=build /workspace/PadronWS/target/PadronWS-*.war /usr/local/tomcat/webapps/PadronWS.war
 
 ##
 # @instruction EXPOSE

@@ -56,8 +56,8 @@ services:
     # @param {list} - Lista de variables de entorno en formato CLAVE=VALOR.
     # @notes Ajusta los valores segun tu entorno de desarrollo/produccion.
     environment:
-      - DB_HOST=dev-apps.dgutierrez.dev # Host de la base de datos
-      - DB_PORT=15035                 # Puerto de la base de datos
+      - DB_HOST=localhost # Host de la base de datos
+      - DB_PORT=3306                 # Puerto de la base de datos
       - DB_NAME=padron                  # Nombre de la base de datos
       - DB_USER=padron                  # Usuario de la base de datos
       - DB_PASSWORD=padron              # Contrasena de la base de datos
@@ -74,4 +74,6 @@ services:
     # @directive restart
     # @description Define la politica de reinicio para el contenedor.
     # @param {string} unless-stopped - Reinicia el contenedor automaticamente si se detiene
+    #                                (por error o al reiniciar Docker), a menos que haya sido
+    #                                detenido manualmente por el usuario (ej. `docker stop`).
     restart: unless-stopped
