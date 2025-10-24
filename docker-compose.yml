@@ -1,0 +1,77 @@
+# ===================================================================
+# Docker Compose Configuration for Padron WS Application
+# ===================================================================
+#
+# Este archivo define como ejecutar la aplicacion Padron WS usando Docker Compose.
+# Se encarga de construir la imagen (si es necesario) a partir del Dockerfile,
+# configurar los puertos, inyectar las variables de entorno para la conexion
+# a la base de datos (utilizadas por context.xml en Tomcat) y definir
+# la politica de reinicio del contenedor.
+#
+# @author lsanabria
+#
+
+##
+# @section services
+# @description Define los diferentes contenedores (servicios) que componen la aplicacion.
+#              En este caso, solo tenemos un servicio para la aplicacion web.
+services:
+
+  ##
+  # @service padron-app
+  # @description Define el servicio principal de la aplicacion web Padron WS.
+  #              Este servicio se construira a partir del Dockerfile local
+  #              y se ejecutara con la configuracion especificada.
+  padron-app:
+
+    ##
+    # @directive build
+    # @description Instruye a Docker Compose para construir una imagen Docker.
+    # @param {string} . - Especifica que el contexto de construccion (donde se
+    #                     encuentra el Dockerfile y los archivos a copiar) es el
+    #                     directorio actual donde se ejecuta docker-compose.
+    build: .
+
+    ##
+    # @directive image
+    # @description Asigna un nombre y etiqueta a la imagen que se construira.
+    # @param {string} padron:tomcat11 - Nombre de la imagen (repositorio) y etiqueta (version/variante).
+    image: padron:tomcat11
+
+    ##
+    # @directive ports
+    # @description Mapea puertos entre la maquina anfitrion (host) y el contenedor.
+    # @param {list} - Lista de mapeos de puertos.
+    # @param {string} "8085:8080" - Mapea el puerto 8085 de la maquina host al puerto 8080
+    #                             del contenedor (donde Tomcat escucha por defecto).
+    #                             La aplicacion sera accesible en http://localhost:8085.
+    ports:
+      - "8085:8080" # <-- Usando 8085 como puerto local, el 8080 es el de Tomcat
+
+    ##
+    # @directive environment
+    # @description Define las variables de entorno que estaran disponibles dentro del contenedor.
+    #              Estas variables son utilizadas por el archivo `context.xml` de Tomcat
+    #              para configurar dinamicamente el DataSource JNDI.
+    # @param {list} - Lista de variables de entorno en formato CLAVE=VALOR.
+    # @notes Ajusta los valores segun tu entorno de desarrollo/produccion.
+    environment:
+      - DB_HOST=dev-apps.dgutierrez.dev # Host de la base de datos
+      - DB_PORT=15035                 # Puerto de la base de datos
+      - DB_NAME=padron                  # Nombre de la base de datos
+      - DB_USER=padron                  # Usuario de la base de datos
+      - DB_PASSWORD=padron              # Contrasena de la base de datos
+
+      # --- Variables Opcionales para el Pool de Conexiones (DBCP2) ---
+      #     Si se omiten, se usaran los valores por defecto definidos en context.xml
+      - DB_INITIAL_SIZE=10            # Tamano inicial del pool
+      - DB_MAX_ACTIVE=200             # Maximo de conexiones activas (maxTotal en DBCP2)
+      - DB_MAX_IDLE=100               # Maximo de conexiones inactivas
+      - DB_MIN_IDLE=10                # Minimo de conexiones inactivas
+      - DB_MAX_WAIT=10000             # Tiempo maximo de espera por una conexion (ms)
+
+    ##
+    # @directive restart
+    # @description Define la politica de reinicio para el contenedor.
+    # @param {string} unless-stopped - Reinicia el contenedor automaticamente si se detiene
+    restart: unless-stopped

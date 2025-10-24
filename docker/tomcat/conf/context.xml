@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+
+  <Resource
+      name="jdbc/padronDataSource"
+      auth="Container"
+      type="javax.sql.DataSource"
+      factory="org.apache.tomcat.dbcp.dbcp2.BasicDataSourceFactory"
+
+      driverClassName="org.mariadb.jdbc.Driver"
+      url="jdbc:mariadb://${DB_HOST:-dev-apps.dgutierrez.dev}:${DB_PORT:-15035}/${DB_NAME:-padron}"
+      username="${DB_USER:-padron}"
+      password="${DB_PASSWORD:-padron}"
+
+      initialSize="${DB_INITIAL_SIZE:-10}"
+      maxTotal="${DB_MAX_ACTIVE:-200}"          maxIdle="${DB_MAX_IDLE:-100}"
+      minIdle="${DB_MIN_IDLE:-10}"
+      maxWaitMillis="${DB_MAX_WAIT:-10000}"
+
+      testOnBorrow="${DB_TEST_ON_BORROW:-true}"
+      testWhileIdle="${DB_TEST_WHILE_IDLE:-true}"
+      validationQuery="${DB_VALIDATION_QUERY:-SELECT 1}"
+      validationQueryTimeout="${DB_VALIDATION_TIMEOUT_SEC:-5}"
+      timeBetweenEvictionRunsMillis="${DB_EVICT_RUNS_MS:-5000}"
+      minEvictableIdleTimeMillis="${DB_MIN_EVICTABLE_MS:-30000}"
+
+      removeAbandonedOnBorrow="${DB_REMOVE_ABANDONED_ON_BORROW:-true}"
+      removeAbandonedOnMaintenance="${DB_REMOVE_ABANDONED_ON_MAINT:-true}"
+      removeAbandonedTimeout="${DB_REMOVE_ABANDONED_TIMEOUT:-600}"
+  />
+</Context>

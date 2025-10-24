@@ -1,0 +1,625 @@
+{
+	"info": {
+		"_postman_id": "9fbf8826-effb-4cc7-846c-4c13f5b6ad05",
+		"name": "Infos-Padron",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26660630",
+		"_collection_link": "https://infos-team.postman.co/workspace/Infosgroup~6ddc7007-5e78-4076-b893-2ffa99076916/collection/26660630-9fbf8826-effb-4cc7-846c-4c13f5b6ad05?action=share&source=collection_link&creator=26660630"
+	},
+	"item": [
+		{
+			"name": "security",
+			"item": [
+				{
+					"name": "about",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/security/about",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"security",
+								"about"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "about",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/security/about",
+									"protocol": "{{protocolo}}",
+									"host": [
+										"{{host}}"
+									],
+									"path": [
+										"{{issuer}}",
+										"{{apiRoot}}",
+										"security",
+										"about"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Fri, 27 Jun 2025 22:31:51 GMT"
+								},
+								{
+									"key": "Server",
+									"value": "Apache"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "SAMEORIGIN"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "sameorigin"
+								},
+								{
+									"key": "Access-Control-Max-Age",
+									"value": "1000"
+								},
+								{
+									"key": "Vary",
+									"value": "Origin,Access-Control-Request-Method,Access-Control-Request-Headers"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "X-Cache",
+									"value": "MISS from composteros.go.cr"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=5, max=100"
+								},
+								{
+									"key": "Connection",
+									"value": "Keep-Alive"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"success\": true,\n    \"errors\": [],\n    \"data\": \"2025-06-24-1700\"\n}"
+						}
+					]
+				},
+				{
+					"name": "auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Verifica que la respuesta tenga un status 200",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									" ",
+									"// Intenta parsear la respuesta como JSON",
+									"let response = pm.response.json();",
+									" ",
+									"// Asegura que la respuesta tenga el campo \"data\"",
+									"pm.test(\"La respuesta contiene 'data'\", function () {",
+									"    pm.expect(response).to.have.property(\"data\");",
+									"});",
+									" ",
+									"// Guarda el valor de \"data\" como variable de entorno \"token\"",
+									"pm.environment.set(\"token\", response.data);",
+									" ",
+									"// (Opcional) Muestra el token en la consola de Postman para depuración",
+									"console.log(\"Token guardado:\", response.data);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userName\": \"administrador\",\n    \"password\": \"administrador\",\n    \"canal\": \"AppMovil\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/security/auth",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"security",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "ciudadano",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/all",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/111420777",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"111420777"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "guardar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"cedula\": 111420777,\n        \"junta\": 0,\n        \"nombre\": \"luis\",\n        \"apellido1\": \"SANABRIA\",\n        \"apellido2\": \"VEGA\",\n        \"fechaCaducidad\": [\n            2026,\n            7,\n            7\n        ],\n        \"direccionElectoral\": {\n            \"codDirElectoral\": 301027,\n            \"nombre\": null,\n            \"canton\": \"CENTRAL\",\n            \"distrito\": \"PITAHAYA\",\n            \"provincia\": \"CARTAGO\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/guardar",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"guardar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"cedula\": 111420777\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/eliminar",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"eliminar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filtro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"cedula\": 111420777\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/filtro",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"filtro"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "direccionElectoral",
+			"item": [
+				{
+					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/all",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "id",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/111420777",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"111420777"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "guardar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"cedula\": 111420777,\n        \"junta\": 0,\n        \"nombre\": \"luis\",\n        \"apellido1\": \"SANABRIA\",\n        \"apellido2\": \"VEGA\",\n        \"fechaCaducidad\": [\n            2026,\n            7,\n            7\n        ],\n        \"direccionElectoral\": {\n            \"codDirElectoral\": 301027,\n            \"nombre\": null,\n            \"canton\": \"CENTRAL\",\n            \"distrito\": \"PITAHAYA\",\n            \"provincia\": \"CARTAGO\"\n        }\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/guardar",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"guardar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminar",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"cedula\": 111420777\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/ciudadano/eliminar",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"ciudadano",
+								"eliminar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "filtro",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{token}}",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n        \"codDirElectoral\": 101001\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{protocolo}}://{{host}}/{{issuer}}/{{apiRoot}}/direccionElectoral/filtro",
+							"protocol": "{{protocolo}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"{{issuer}}",
+								"{{apiRoot}}",
+								"direccionElectoral",
+								"filtro"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
